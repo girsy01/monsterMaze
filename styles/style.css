@@ -1,0 +1,20 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#game-screen{
+  position: relative;
+  margin: 50px;
+}
+
+.field{
+  background-color: #f1f1f1;
+  /* display: inline-block; */
+  border: .1px solid black;
+}
+
+.playerOnField{
+  background-color: blue;
+}

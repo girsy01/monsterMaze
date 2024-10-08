@@ -8,9 +8,12 @@ class Game {
     this.allFields = []; //all fields in one array
     this.wallFields = [];
     this.pathFields = [];
-    this.currentField = null;
     this.player = null;
+    this.playerElement = null;
+    this.currentFieldPlayer = null;
     this.monsters = [];
+    this.monsterElements = [];
+    this.currentFieldsMonsters = [];
   }
 
   initialize() {
@@ -29,35 +32,24 @@ class Game {
     this.generateMaze();
     //add Player
     this.addPlayer();
-
-    //event-listeners for Arrow-keys to move player
-    document.addEventListener("keydown", (event) => {
-      this.player.moveX = 0;
-      this.player.moveY = 0;
-      if (event.code === "ArrowUp") this.player.moveY = -1;
-      if (event.code === "ArrowDown") this.player.moveY = 1;
-      if (event.code === "ArrowRight") this.player.moveX = 1;
-      if (event.code === "ArrowLeft") this.player.moveX = -1;
-      this.movePlayer();
-      this.update();
-    });
-    document.addEventListener("keyup", (event) => {
-      if (event.code === "ArrowUp") this.player.moveY = 0;
-      if (event.code === "ArrowDown") this.player.moveY = 0;
-      if (event.code === "ArrowRight") this.player.moveX = 0;
-      if (event.code === "ArrowLeft") this.player.moveX = 0;
-      this.movePlayer();
-      this.update();
-    });
+    //add Monsters
+    this.addMonsters(3);
+    //add event-listeners for Arrow-keys to move player
+    this.initializeArrowMovementPlayer();
   }
 
   update() {
-    this.currentField.element.classList.add("playerOnField");
+    //remove elements from DOM
+    this.playerElement.remove();
+    this.monsterElements.forEach((e) => e.remove);
+
+    //add elements to new fieldElements
+    this.currentFieldPlayer.element.appendChild(this.playerElement);
+    this.currentFieldsMonsters.forEach((e, i) => e.element.appendChild(this.monsterElements[i]));
+
     this.allFields.forEach((e) => {
       if (e.x === this.player.x && e.y == this.player.y) {
-        this.currentField.element.classList.remove("playerOnField");
-        this.currentField = e;
-        this.currentField.element.classList.add("playerOnField");
+        this.currentFieldPlayer = e;
       }
     });
   }
@@ -119,12 +111,50 @@ class Game {
   }
 
   addPlayer() {
+    this.playerElement = document.createElement("div");
+    this.playerElement.classList.add("isPlayer");
     const randomIndex = parseInt(Math.random() * this.pathFields.length);
-    this.currentField = this.pathFields[randomIndex]; //random field
-    console.log(randomIndex, this.currentField);
-    this.player = new Player(this.currentField, this.fieldsInRow, this.fieldsInCol);
-    console.log("Player", this.player);
+    this.currentFieldPlayer = this.pathFields[randomIndex]; //random field
+    // console.log(randomIndex, this.currentField);
+    this.player = new Player(this.currentFieldPlayer, this.fieldsInRow, this.fieldsInCol);
+    // console.log(this.player);
     this.update();
+  }
+
+  addMonsters(num) {
+    for (let i = 0; i < num; i++) {
+      const randomIndex = parseInt(Math.random() * this.pathFields.length);
+      this.currentFieldsMonsters[i] = this.pathFields[randomIndex]; //random field
+      this.monsters.push(
+        new Monster(this.currentFieldsMonsters[i], this.fieldsInRow, this.fieldsInCol)
+      );
+      this.monsterElements.push(document.createElement("div"));
+      this.monsterElements[i].classList.add("isMonster");
+      // console.log(this.monsters[i]);
+    }
+    // console.log('Current Fields of Monsters after adding them:', this.currentFieldsMonsters);
+    this.update();
+  }
+
+  initializeArrowMovementPlayer() {
+    document.addEventListener("keydown", (event) => {
+      this.player.moveX = 0;
+      this.player.moveY = 0;
+      if (event.code === "ArrowUp") this.player.moveY = -1;
+      if (event.code === "ArrowDown") this.player.moveY = 1;
+      if (event.code === "ArrowRight") this.player.moveX = 1;
+      if (event.code === "ArrowLeft") this.player.moveX = -1;
+      this.movePlayer();
+      this.update();
+    });
+    document.addEventListener("keyup", (event) => {
+      if (event.code === "ArrowUp") this.player.moveY = 0;
+      if (event.code === "ArrowDown") this.player.moveY = 0;
+      if (event.code === "ArrowRight") this.player.moveX = 0;
+      if (event.code === "ArrowLeft") this.player.moveX = 0;
+      this.movePlayer();
+      this.update();
+    });
   }
 
   movePlayer() {

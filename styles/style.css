@@ -24,17 +24,29 @@
 }
 
 .isPlayer{
+  position: absolute;
   width: 80%;
   height: 80%;
   background-color: blue;
+  z-index: 2;
 }
 
 .isMonster{
+  position: absolute;
   width: 80%;
   height: 80%;
   background-color: red;
+  z-index: 2;
 }
 
 .isWall{
   background-color: #1f1f1f;
+}
+
+.coin{
+  position: absolute;
+  z-index: 1;
+  width: 50%;
+  height: 50%;
+  background-color: yellow;
 }

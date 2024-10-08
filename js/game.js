@@ -4,6 +4,7 @@ class Game {
     this.gameIntervalId = null;
     this.gameLoopFrequency = 1000 / 60;
     this.counter = 0;
+    this.frequencyOfMonstersMovement = 20; //every ... iteration the monsters are moving (small number -> faster)
     this.fieldsInRow = fieldsInRow;
     this.fieldsInCol = fieldsInCol;
     this.fieldSize = fieldSize;
@@ -34,6 +35,12 @@ class Game {
     }
     //add walls
     this.generateMaze();
+    //add coins to paths
+    this.pathFields.forEach((e) => {
+      const coinElement = document.createElement("div");
+      coinElement.classList.add("coin");
+      e.element.appendChild(coinElement);
+    });
     //add Player
     this.addPlayer();
     //add Monsters
@@ -75,7 +82,7 @@ class Game {
     });
 
     this.counter++;
-    if (this.counter % 20 === 0) {
+    if (this.counter % this.frequencyOfMonstersMovement === 0) {
       this.moveMonsters();
     }
   }

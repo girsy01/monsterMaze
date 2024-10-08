@@ -4,9 +4,14 @@
   box-sizing: border-box;
 }
 
-#game-screen{
+#game-screen,
+#start-screen{
   position: relative;
   margin: 50px;
+}
+
+#start-btn{
+  padding: 20px;
 }
 
 .field{

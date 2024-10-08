@@ -209,7 +209,10 @@ class Game {
   }
 
   moveMonsters() {
+    console.log("\n\nLET THE FUN BEGIN!");
     this.currentFieldsMonsters.forEach((currentField, index) => {
+      console.log("\nCurrent Monster:", this.monsters[index], "\nCurrent Field:", currentField);
+
       const directions = [
         [1, 0], // Down
         [-1, 0], // Up
@@ -217,28 +220,65 @@ class Game {
         [0, -1], // Left
       ];
 
-      // Shuffle directions for random movement
-      for (let i = directions.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [directions[i], directions[j]] = [directions[j], directions[i]];
-      }
+      let nx, ny, dx, dy;
 
-      // Try to move in one of the random directions
-      for (const [dx, dy] of directions) {
-        const nx = currentField.x + dx; // New x-coordinate
-        const ny = currentField.y + dy; // New y-coordinate
-
+      const updateIfValid = (nx, ny) => {
         // Check if the new position is valid
         if (
           nx >= 0 &&
           nx < this.fieldsInRow &&
           ny >= 0 &&
           ny < this.fieldsInCol &&
-          !this.fieldsMatrix[nx][ny].isWall // Check if not a wall
+          !this.fieldsMatrix[nx][ny].isWall && // Check if not a wall
+          !this.currentFieldsMonsters.filter((e) => e.x === nx && e.y === ny).length //is not field of other monster
         ) {
           // Update monster's position
+          console.log(
+            "Checking for validity. Movement is valid. New current Field:",
+            `[${nx},${ny}]`
+          );
           this.currentFieldsMonsters[index] = this.fieldsMatrix[nx][ny]; // Update field
-          break; // Exit the loop after moving
+          return true;
+        }
+        console.log("Checking for validity. Movement NOT valid.");
+        return false;
+      };
+
+      //in 75% of the cases the monster keeps moving in the same direction
+      if (Math.random() < 0.85) {
+        console.log(
+          "Trying to keep going in current direction:",
+          this.monsters[index].currentDirection
+        );
+
+        dx = this.monsters[index].currentDirection[0];
+        dy = this.monsters[index].currentDirection[1];
+        nx = currentField.x + dx; // New x-coordinate
+        ny = currentField.y + dy; // New y-coordinate
+        const check = updateIfValid(nx, ny);
+        if (check) return;
+      }
+      console.log("Still here!");
+
+      // Shuffle directions for random movement
+      for (let i = directions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [directions[i], directions[j]] = [directions[j], directions[i]];
+      }
+
+      console.log("Directions after shuffling: ", directions);
+
+      //in 25% of the cases or if continuing is not possible:
+      // Try to move in one of the random directions
+      for (const [dx, dy] of directions) {
+        console.log("Checking this direction now:", `[${dx},${dy}]`);
+        nx = currentField.x + dx; // New x-coordinate
+        ny = currentField.y + dy; // New y-coordinate
+        const check = updateIfValid(nx, ny);
+        if (check) {
+          console.log("Valid movement!");
+          this.monsters[index].currentDirection = [dx, dy];
+          break;
         }
       }
     });
@@ -249,4 +289,45 @@ class Game {
       monsterField.element.appendChild(element); // Move the monster to its new field
     });
   }
+  // moveMonsters() {
+  //   this.currentFieldsMonsters.forEach((currentField, index) => {
+  //     const directions = [
+  //       [1, 0], // Down
+  //       [-1, 0], // Up
+  //       [0, 1], // Right
+  //       [0, -1], // Left
+  //     ];
+
+  //     // Shuffle directions for random movement
+  //     for (let i = directions.length - 1; i > 0; i--) {
+  //       const j = Math.floor(Math.random() * (i + 1));
+  //       [directions[i], directions[j]] = [directions[j], directions[i]];
+  //     }
+
+  //     // Try to move in one of the random directions
+  //     for (const [dx, dy] of directions) {
+  //       const nx = currentField.x + dx; // New x-coordinate
+  //       const ny = currentField.y + dy; // New y-coordinate
+
+  //       // Check if the new position is valid
+  //       if (
+  //         nx >= 0 &&
+  //         nx < this.fieldsInRow &&
+  //         ny >= 0 &&
+  //         ny < this.fieldsInCol &&
+  //         !this.fieldsMatrix[nx][ny].isWall // Check if not a wall
+  //       ) {
+  //         // Update monster's position
+  //         this.currentFieldsMonsters[index] = this.fieldsMatrix[nx][ny]; // Update field
+  //         break; // Exit the loop after moving
+  //       }
+  //     }
+  //   });
+
+  //   // Update monster elements in the DOM
+  //   this.monsterElements.forEach((element, index) => {
+  //     const monsterField = this.currentFieldsMonsters[index];
+  //     monsterField.element.appendChild(element); // Move the monster to its new field
+  //   });
+  // }
 }

@@ -1,9 +1,15 @@
 class Game {
   constructor(fieldsInRow, fieldsInCol, fieldSize) {
-    this.gameScreen = document.getElementById("game-screen");
+    this.gameScreenElement = document.getElementById("game-screen");
+    this.coinsElement = document.getElementById("coins");
+    this.livesElement = document.getElementById("lives");
+    this.gameField = document.getElementById("game-field");
     this.gameIntervalId = null;
     this.gameLoopFrequency = 1000 / 60;
+    this.levelCompleted = false;
     this.counter = 0;
+    this.totalCoins = 0;
+    this.coinsCollected = 0;
     this.frequencyOfMonstersMovement = 20; //every ... iteration the monsters are moving (small number -> faster)
     this.fieldsInRow = fieldsInRow;
     this.fieldsInCol = fieldsInCol;
@@ -22,6 +28,7 @@ class Game {
   }
 
   initialize() {
+    this.gameScreenElement.style.display = "block";
     //initialize the game field
     //empty fields
     for (let i = 0; i < this.fieldsInRow; i++) {
@@ -30,7 +37,7 @@ class Game {
         const field = new Field(i, j, this.fieldSize);
         this.fieldsMatrix[i].push(field);
         this.allFields.push(field);
-        this.gameScreen.appendChild(field.element);
+        this.gameField.appendChild(field.element);
       }
     }
     //add walls
@@ -40,6 +47,8 @@ class Game {
       const coinElement = document.createElement("div");
       coinElement.classList.add("coin");
       e.element.appendChild(coinElement);
+      e.hasCoin = true;
+      this.totalCoins++;
     });
     //add Player
     this.addPlayer();
@@ -47,6 +56,9 @@ class Game {
     this.addMonsters(this.numberOfMonsters);
     //add event-listeners for Arrow-keys to move player
     this.initializeArrowMovementPlayer();
+    //add statistics to DOM
+    this.coinsElement.innerText = this.player.coins;
+    this.livesElement.innerText = this.player.lives;
     //start loop
     this.gameLoop();
   }
@@ -75,12 +87,35 @@ class Game {
     this.currentFieldsMonsters.forEach((e, i) => e.element.appendChild(this.monsterElements[i]));
 
     //update current field of player due to movement per arrow keys
-    this.allFields.forEach((e) => {
+    this.pathFields.forEach((e) => {
       if (e.x === this.player.x && e.y == this.player.y) {
         this.currentFieldPlayer = e;
       }
     });
 
+    //collect coin
+    if (this.currentFieldPlayer.hasCoin) {
+      const coinElement = this.currentFieldPlayer.element.querySelector(".coin");
+      coinElement.remove();
+      this.currentFieldPlayer.hasCoin = false;
+      this.player.coins++;
+      this.coinsCollected++;
+      if (this.player.coins % 100 === 0) {
+        this.player.lives++;
+        this.livesElement.innerText = this.player.lives;
+      }
+      this.coinsElement.innerText = this.player.coins;
+      //check if all coins have been collected
+      if (this.totalCoins === this.coinsCollected) this.levelCompleted = true;
+    }
+
+    if (this.levelCompleted) {
+      // this.startNewLevel();
+      console.log("level completed");
+      clearInterval(this.gameIntervalId);
+    }
+
+    //monsters move just in a certain interval
     this.counter++;
     if (this.counter % this.frequencyOfMonstersMovement === 0) {
       this.moveMonsters();

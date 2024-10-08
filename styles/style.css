@@ -5,6 +5,7 @@
 }
 
 #game-screen,
+#game-field,
 #start-screen{
   position: relative;
   margin: 50px;
@@ -12,6 +13,10 @@
 
 #start-btn{
   padding: 20px;
+}
+
+#game-screen{
+  display: none;
 }
 
 .field{

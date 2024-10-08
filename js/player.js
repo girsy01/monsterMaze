@@ -1,6 +1,7 @@
-class Player extends Figure{
+class Player extends Figure {
   constructor(field, fieldsInRow, fieldsInCol) {
     super(field, fieldsInRow, fieldsInCol);
-    this.score = 0;
+    this.coins = 0;
+    this.lives = 3;
   }
 }

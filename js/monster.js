@@ -1,4 +1,4 @@
-class Player extends Figure{
+class Monster extends Figure {
   constructor(field, fieldsInRow, fieldsInCol) {
     super(field, fieldsInRow, fieldsInCol);
   }

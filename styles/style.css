@@ -18,3 +18,7 @@
 .playerOnField{
   background-color: blue;
 }
+
+.isWall{
+  background-color: #1f1f1f;
+}

@@ -5,12 +5,13 @@ class Game {
     this.livesElement = document.getElementById("lives");
     this.gameField = document.getElementById("game-field");
     this.gameIntervalId = null;
-    this.gameLoopFrequency = 1000 / 60;
+    this.gameLoopFrequency = 1000 / 20;
+    this.frequencyOfMonstersMovement = 10; //every ... iteration the monsters are moving (small number -> faster)
+    this.gameOver = false;
     this.levelCompleted = false;
     this.counter = 0;
     this.totalCoins = 0;
     this.coinsCollected = 0;
-    this.frequencyOfMonstersMovement = 20; //every ... iteration the monsters are moving (small number -> faster)
     this.fieldsInRow = fieldsInRow;
     this.fieldsInCol = fieldsInCol;
     this.fieldSize = fieldSize;
@@ -50,10 +51,10 @@ class Game {
       e.hasCoin = true;
       this.totalCoins++;
     });
-    //add Player
+    //add Player and Monster
     this.addPlayer();
-    //add Monsters
     this.addMonsters(this.numberOfMonsters);
+    this.update();
     //add event-listeners for Arrow-keys to move player
     this.initializeArrowMovementPlayer();
     //add statistics to DOM
@@ -66,9 +67,7 @@ class Game {
   start() {
     this.initialize();
 
-    this.gameIntervalId = setInterval(() => {
-      this.gameLoop();
-    }, this.gameLoopFrequency);
+    this.startLoop();
   }
 
   gameLoop() {
@@ -78,6 +77,13 @@ class Game {
 
   //update is called in each iteration of the game-loop
   update() {
+    //collect coin
+    this.collectCoin();
+
+    //check for collision
+    this.checkForCollision();
+
+    // console.log("update");
     //remove elements from DOM
     this.playerElement.remove();
     this.monsterElements.forEach((e) => e.remove);
@@ -92,22 +98,6 @@ class Game {
         this.currentFieldPlayer = e;
       }
     });
-
-    //collect coin
-    if (this.currentFieldPlayer.hasCoin) {
-      const coinElement = this.currentFieldPlayer.element.querySelector(".coin");
-      coinElement.remove();
-      this.currentFieldPlayer.hasCoin = false;
-      this.player.coins++;
-      this.coinsCollected++;
-      if (this.player.coins % 100 === 0) {
-        this.player.lives++;
-        this.livesElement.innerText = this.player.lives;
-      }
-      this.coinsElement.innerText = this.player.coins;
-      //check if all coins have been collected
-      if (this.totalCoins === this.coinsCollected) this.levelCompleted = true;
-    }
 
     if (this.levelCompleted) {
       // this.startNewLevel();
@@ -178,6 +168,19 @@ class Game {
     // console.log('All Path Fields:', this.pathFields);
   }
 
+  startLoop() {
+    this.gameIntervalId = setInterval(() => {
+      this.gameLoop();
+    }, this.gameLoopFrequency);
+  }
+
+  pauseLoop(delay = 1500) {
+    clearInterval(this.gameIntervalId);
+    setTimeout(() => {
+      this.startLoop();
+    }, delay);
+  }
+
   addPlayer() {
     this.playerElement = document.createElement("div");
     this.playerElement.classList.add("isPlayer");
@@ -186,22 +189,28 @@ class Game {
     // console.log(randomIndex, this.currentField);
     this.player = new Player(this.currentFieldPlayer, this.fieldsInRow, this.fieldsInCol);
     // console.log(this.player);
-    this.update();
+    // this.update();
   }
 
   addMonsters(num) {
     for (let i = 0; i < num; i++) {
       const randomIndex = parseInt(Math.random() * this.pathFields.length);
-      this.currentFieldsMonsters[i] = this.pathFields[randomIndex]; //random field
-      this.monsters.push(
-        new Monster(this.currentFieldsMonsters[i], this.fieldsInRow, this.fieldsInCol)
-      );
-      this.monsterElements.push(document.createElement("div"));
-      this.monsterElements[i].classList.add("isMonster");
-      // console.log(this.monsters[i]);
+      const newField = this.pathFields[randomIndex];
+      this.currentFieldsMonsters.push(newField); //random field
+      this.monsters.push(new Monster(newField, this.fieldsInRow, this.fieldsInCol));
+      const newElement = document.createElement("div");
+      const r = Math.floor(Math.random() * 100) + 150;
+      const g = Math.floor(Math.random() * 50);
+      const b = Math.floor(Math.random() * 50);
+      newElement.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+      this.monsterElements.push(newElement);
+      newElement.classList.add("isMonster");
+      // console.log(this.monsters[this.monsters.length - 1]);
     }
-    // console.log('Current Fields of Monsters after adding them:', this.currentFieldsMonsters);
-    this.update();
+    // console.log("Current Monsters:", this.monsters);
+    // console.log("Current Fields of Monsters after adding them:", this.currentFieldsMonsters);
+    // console.log("Current Monster Elements:", this.monsterElements);
+    // this.update();
   }
 
   initializeArrowMovementPlayer() {
@@ -317,5 +326,61 @@ class Game {
       const monsterField = this.currentFieldsMonsters[index];
       monsterField.element.appendChild(element); // Move the monster to its new field
     });
+  }
+
+  collectCoin() {
+    if (this.currentFieldPlayer.hasCoin) {
+      const coinElement = this.currentFieldPlayer.element.querySelector(".coin");
+      coinElement.remove();
+      this.currentFieldPlayer.hasCoin = false;
+      this.player.coins++;
+      this.coinsCollected++;
+      if (this.player.coins % 100 === 0) {
+        this.player.lives++;
+        this.livesElement.innerText = this.player.lives;
+      }
+      this.coinsElement.innerText = this.player.coins;
+      //check if all coins have been collected
+      if (this.totalCoins === this.coinsCollected) this.levelCompleted = true;
+    }
+  }
+
+  checkForCollision() {
+    let collisionIndex = null;
+    this.currentFieldsMonsters.forEach((e, index) => {
+      if (e === this.currentFieldPlayer) {
+        // console.log("Collision!");
+        // this.pauseLoop(500);
+        //save index of collision monster
+        collisionIndex = index;
+      }
+    });
+    //if collision occurred, remove monster, adjust lives and add new monster
+    if (collisionIndex !== null) {
+      //remove monster
+      this.monsters.splice(collisionIndex, 1);
+      this.currentFieldsMonsters.splice(collisionIndex, 1);
+      this.monsterElements[collisionIndex].remove();
+      this.monsterElements.splice(collisionIndex, 1);
+      //adjust lives
+      this.player.lives--;
+      this.livesElement.innerText = this.player.lives;
+      if (this.player.lives === 0) this.gameOver = true;
+      //add new monster
+      this.addMonsters(1);
+    }
+    console.log(this.player.lives, this.gameOver);
+    if (this.gameOver) {
+      console.log("Game over.");
+      clearInterval(this.gameIntervalId);
+      //TODO: GAME OVER
+    }
+  }
+
+  relocatePlayer() {
+    console.log("Current field:", this.player.currentField);
+    const randomIndex = parseInt(Math.random() * this.pathFields.length);
+    this.currentFieldPlayer = this.pathFields[randomIndex]; //random field
+    console.log("New field:", this.player.currentField);
   }
 }

@@ -1,5 +1,5 @@
 class Game {
-  constructor(fieldsInRow, fieldsInCol, fieldSize, monsters) {
+  constructor(fieldsInRow, fieldsInCol, fieldSize, monsters, myAudio) {
     this.startScreenElement = document.getElementById("start-screen");
     this.gameScreenElement = document.getElementById("game-screen");
     this.endScreenElement = document.getElementById("end-screen");
@@ -9,8 +9,6 @@ class Game {
     this.livesElement = document.getElementById("lives");
     this.gameFieldElement = document.getElementById("game-field");
     this.messageLevelElement = document.getElementById("message-level");
-    this.musicButtonElement = document.getElementById("music-btn");
-    this.soundEffectsButtonElement = document.getElementById("soundEffects-btn");
     this.endScoreElement = document.getElementById("end-score");
     this.endLevelElement = document.getElementById("end-levels");
     this.gameIntervalId = null;
@@ -26,6 +24,7 @@ class Game {
     this.fieldsInCol = fieldsInCol;
     this.fieldsInRow = fieldsInRow;
     this.fieldSize = fieldSize;
+    this.myAudio = myAudio;
     this.fieldsMatrix = []; //fields matrix [][]
     this.allFields = []; //all fields in one array
     this.wallFields = [];
@@ -37,17 +36,6 @@ class Game {
     this.monsters = [];
     this.monsterElements = [];
     this.currentFieldsMonsters = [];
-    this.audioOn = true;
-    this.musicOn = true;
-    this.soundBackgroundMusic = new Audio("/sounds/background.mp3");
-    this.soundBackgroundMusic.loop = true;
-    this.soundLife = new Audio("/sounds/life.mp3");
-    this.soundCoin = new Audio("/sounds/coin.mp3");
-    this.soundCoin.playbackRate = 2; // 1.5x faster
-    this.soundLevel = new Audio("/sounds/level.wav");
-    this.soundCollision = new Audio("/sounds/collision.wav");
-    this.soundGameover = new Audio("/sounds/gameover.wav");
-    this.soundGameover.playbackRate = 1.2; // 1.5x faster
   }
 
   initialize() {
@@ -80,26 +68,18 @@ class Game {
     this.addMonsters(this.numberOfMonsters);
     this.update();
     //add event-listeners for Arrow-keys to move player
-    this.initializeArrowMovementPlayer();
+    this.initializeKeyListeners();
     //add statistics to DOM
     this.coinsElement.innerText = this.player.coins;
     this.livesElement.innerText = this.player.lives;
     //adjust event handler for music button
-    let handleMusic = () => {
-      this.musicOn = !this.musicOn;
-      this.musicButtonElement.classList.toggle("active");
-      if (this.musicOn) this.soundBackgroundMusic.play();
-      else {
-        this.soundBackgroundMusic.pause();
-        this.soundBackgroundMusic.currentTime = 0;
-      }
-    };
-    this.musicButtonElement.onclick = () => handleMusic();
+    this.myAudio.musicButtonElement.onclick = () => this.myAudio.handleMusic();
     //start loop
     this.gameLoop();
   }
 
   start() {
+    console.log(this.myAudio);
     this.startScreenElement.style.display = "none";
     this.initialize();
     this.startLoop();
@@ -109,7 +89,7 @@ class Game {
     // console.log("loop started");
     this.gameIntervalId = setInterval(() => {
       //start music if wanted
-      if (this.musicOn) this.soundBackgroundMusic.play();
+      if (this.myAudio.musicOn) this.myAudio.soundBackgroundMusic.play();
       this.gameLoop();
     }, this.gameLoopFrequency);
   }
@@ -124,6 +104,21 @@ class Game {
   gameLoop() {
     // console.log("game loop");
     this.update();
+  }
+
+  handleGameOver() {
+    // console.log("Game over.");
+    clearInterval(this.gameIntervalId);
+    this.myAudio.soundBackgroundMusic.pause();
+    if (this.myAudio.audioOn) this.myAudio.soundGameover.play();
+    this.myAudio.gameStarted = false;
+
+    this.gameScreenElement.style.display = "none";
+    this.audioButtonsElement.style.display = "none";
+    this.endScreenElement.style.display = "flex";
+
+    this.endScoreElement.innerText = this.coinsCollected;
+    this.endLevelElement.innerText = this.levelCount - 1;
   }
 
   //update is called in each iteration of the game-loop
@@ -151,7 +146,7 @@ class Game {
     });
 
     if (this.levelCompleted) {
-      if (this.audioOn) this.soundLevel.play();
+      if (this.myAudio.audioOn) this.myAudio.soundLevel.play();
       clearInterval(this.gameIntervalId);
       this.messageLevelElement.style.display = "block";
       console.log("level completed");
@@ -238,26 +233,24 @@ class Game {
     // this.update();
   }
 
-  initializeArrowMovementPlayer() {
+  initializeKeyListeners() {
     document.addEventListener("keydown", (event) => {
-      if (event.code === "ArrowUp" || event.code === "ArrowDown" || "ArrowRight" || "ArrowLeft") {
+      if (
+        event.code === "ArrowUp" ||
+        event.code === "ArrowDown" ||
+        event.code === "ArrowRight" ||
+        event.code === "ArrowLeft"
+      ) {
         this.player.moveX = 0;
         this.player.moveY = 0;
+
+        if (event.code === "ArrowUp") this.player.moveY = -1;
+        if (event.code === "ArrowDown") this.player.moveY = 1;
+        if (event.code === "ArrowRight") this.player.moveX = 1;
+        if (event.code === "ArrowLeft") this.player.moveX = -1;
+
+        this.movePlayer();
       }
-      if (event.code === "ArrowUp") this.player.moveY = -1;
-      if (event.code === "ArrowDown") this.player.moveY = 1;
-      if (event.code === "ArrowRight") this.player.moveX = 1;
-      if (event.code === "ArrowLeft") this.player.moveX = -1;
-      this.movePlayer();
-      // this.update();
-    });
-    document.addEventListener("keyup", (event) => {
-      if (event.code === "ArrowUp") this.player.moveY = 0;
-      if (event.code === "ArrowDown") this.player.moveY = 0;
-      if (event.code === "ArrowRight") this.player.moveX = 0;
-      if (event.code === "ArrowLeft") this.player.moveX = 0;
-      this.movePlayer();
-      // this.update();
     });
   }
 
@@ -365,9 +358,9 @@ class Game {
       this.currentFieldPlayer.hasCoin = false;
       this.player.coins++;
       this.coinsCollected++;
-      if (this.audioOn) this.soundCoin.play();
+      if (this.myAudio.audioOn) this.myAudio.soundCoin.play();
       if (this.player.coins % this.coinsToNewLife === 0) {
-        if (this.audioOn) this.soundLife.play();
+        if (this.myAudio.audioOn) this.myAudio.soundLife.play();
         this.player.lives++;
         this.livesElement.innerText = this.player.lives;
       }
@@ -390,7 +383,7 @@ class Game {
     //if collision occurred, remove monster, adjust lives and add new monster
     if (collisionIndex !== null) {
       //play audio
-      if (this.audioOn) this.soundCollision.play();
+      if (this.myAudio.audioOn) this.myAudio.soundCollision.play();
       //remove monster
       this.monsters.splice(collisionIndex, 1);
       this.currentFieldsMonsters.splice(collisionIndex, 1);
@@ -470,20 +463,6 @@ class Game {
     this.livesElement.innerText = this.player.lives;
     //start loop
     this.startLoop();
-  }
-
-  handleGameOver() {
-    // console.log("Game over.");
-    clearInterval(this.gameIntervalId);
-    this.soundBackgroundMusic.pause();
-    if (this.audioOn) this.soundGameover.play();
-
-    this.gameScreenElement.style.display = "none";
-    this.audioButtonsElement.style.display = "none";
-    this.endScreenElement.style.display = "flex";
-
-    this.endScoreElement.innerText = this.coinsCollected;
-    this.endLevelElement.innerText = this.levelCount - 1;
   }
 
   // ***********************************************************************************************

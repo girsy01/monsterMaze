@@ -34,10 +34,51 @@ section{
 
 button{
   font-size: 20px;
-  background-color: #aa8dd8;
+  background-color: rgb(170, 141, 216);
   padding: 20px 40px;
   border: 0px;
   border-radius: 50px;
+  cursor: pointer;
+  box-shadow: inset 0px 4px 6px rgba(255, 255, 255, 0.3);
+  background-color: rgb(170, 141, 216);
+}
+
+#audio-btns{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+#start-screen,
+#game-screen{
+  margin-bottom: 20px;
+}
+
+/* Default button style */
+#audio-btns button {
+  display: flex;
+  margin: 15px;
+  padding: 10px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect */
+button:hover {
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+  background-color: hsl(263, 49%, 75%);
+}
+
+/* Style for active button */
+#audio-btns button.active {
+  box-shadow: inset 0px 0px 10px 6px rgba(0, 0, 0, 0.3);
+  background-color: hsl(263, 49%, 75%);
+}
+
+button img{
+  border-radius: 50%;
+  height: 50px;
 }
 
 #game-screen,

@@ -8,6 +8,8 @@ class Game {
     this.livesElement = document.getElementById("lives");
     this.gameFieldElement = document.getElementById("game-field");
     this.messageLevelElement = document.getElementById("message-level");
+    this.musicButtonElement = document.getElementById("music-btn");
+    this.soundEffectsButtonElement = document.getElementById("soundEffects-btn");
     this.gameIntervalId = null;
     this.gameLoopFrequency = 1000 / 20;
     this.frequencyOfMonstersMovement = 10; //every ... iteration the monsters are moving (small number -> faster)
@@ -79,6 +81,16 @@ class Game {
     //add statistics to DOM
     this.coinsElement.innerText = this.player.coins;
     this.livesElement.innerText = this.player.lives;
+    //adjust event handler for music button
+    this.musicButtonElement.onclick = () => {
+      this.musicOn = !this.musicOn;
+      this.musicButtonElement.classList.toggle("active");
+      if (this.musicOn) this.soundBackgroundMusic.play();
+      else {
+        this.soundBackgroundMusic.pause();
+        this.soundBackgroundMusic.currentTime = 0;
+      }
+    };
     //start loop
     this.gameLoop();
   }
@@ -156,6 +168,7 @@ class Game {
       // Reset necessary arrays
       this.wallFields = [];
       this.pathFields = [];
+      this.allFields.forEach((field) => field.element.classList.remove("isWall"));
 
       //Generate new maze
       // const maze = this.mazeAlgorithmDFS();
@@ -390,6 +403,13 @@ class Game {
       clearInterval(this.gameIntervalId);
       this.soundBackgroundMusic.pause();
       if (this.audioOn) this.soundGameover.play();
+      this.musicButtonElement.disabled = true;
+      this.soundEffectsButtonElement.disabled = true;
+      this.musicButtonElement.classList.remove("active");
+      this.musicButtonElement.classList.add("no-hover");
+      this.soundEffectsButtonElement.classList.remove("active");
+      this.soundEffectsButtonElement.classList.add("no-hover");
+
       //TODO: GAME OVER
     }
   }

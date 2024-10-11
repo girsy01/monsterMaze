@@ -9,10 +9,14 @@
 h1{
   font-size: 50px;
   margin-bottom: 50px;
+}
+
+h1{
   display: none;
 }
 
-#title{
+#title,
+#game-over{
   margin-bottom: 50px;
   width: 60vw;
 }
@@ -100,7 +104,7 @@ button img{
   padding-bottom: 20px;
 }
 
-#statistics p{
+p{
   padding: 5px;
   font-size: 18px;
 }
@@ -160,3 +164,8 @@ button img{
   align-items: center;
   display: none;
 }
+
+#end-screen button{
+  margin-top: 50px;
+}
+

@@ -33,8 +33,11 @@ class Game {
     this.monsterElements = [];
     this.currentFieldsMonsters = [];
     this.audioOn = true;
-    this.soundLife = new Audio("/sounds/life.wav");
-    this.soundCoin = new Audio("/sounds/coin.wav");
+    this.musicOn = true;
+    this.soundBackgroundMusic = new Audio("/sounds/background.mp3");
+    this.soundBackgroundMusic.loop = true;
+    this.soundLife = new Audio("/sounds/life.mp3");
+    this.soundCoin = new Audio("/sounds/coin.mp3");
     this.soundCoin.playbackRate = 2; // 1.5x faster
     this.soundLevel = new Audio("/sounds/level.wav");
     this.soundCollision = new Audio("/sounds/collision.wav");
@@ -83,6 +86,7 @@ class Game {
   start() {
     this.startScreenElement.style.display = "none";
     this.initialize();
+    if (this.musicOn) this.soundBackgroundMusic.play();
     this.startLoop();
   }
 
@@ -147,26 +151,36 @@ class Game {
   }
 
   generateMaze() {
-    // const maze = this.mazeAlgorithmDFS();
-    const maze = this.mazeAlgorithmKruskal();
-    // console.log(maze);
+    let mazeValid = false;
+    do {
+      // Reset necessary arrays
+      this.wallFields = [];
+      this.pathFields = [];
 
-    // Apply the generated maze to the fieldsMatrix
-    for (let i = 0; i < this.fieldsInCol; i++) {
-      for (let j = 0; j < this.fieldsInRow; j++) {
-        const currentField = this.fieldsMatrix[i][j];
-        if (maze[i][j] === 1) {
-          currentField.element.classList.add("isWall");
-          this.wallFields.push(currentField);
-          currentField.isWall = true;
-        } else {
-          this.pathFields.push(currentField);
-          currentField.isWall = false;
+      //Generate new maze
+      // const maze = this.mazeAlgorithmDFS();
+      const maze = this.mazeAlgorithmKruskal();
+
+      // Apply the generated maze to the fieldsMatrix
+      for (let i = 0; i < this.fieldsInCol; i++) {
+        for (let j = 0; j < this.fieldsInRow; j++) {
+          const currentField = this.fieldsMatrix[i][j];
+          if (maze[i][j] === 1) {
+            currentField.element.classList.add("isWall");
+            this.wallFields.push(currentField);
+            currentField.isWall = true;
+          } else {
+            this.pathFields.push(currentField);
+            currentField.isWall = false;
+          }
         }
       }
-    }
-    // console.log('All Wall Fields:', this.wallFields);
-    // console.log('All Path Fields:', this.pathFields);
+
+      // Run safety check to ensure no islands exist
+      mazeValid = !this.safetyCheck();
+      //TODO: remove this alert
+      if (!mazeValid) alert("unvalid maze was genereated and is now regenerated.");
+    } while (!mazeValid); // Regenerate maze until no islands are found
   }
 
   addPlayer() {
@@ -374,6 +388,7 @@ class Game {
     if (this.gameOver) {
       console.log("Game over.");
       clearInterval(this.gameIntervalId);
+      this.soundBackgroundMusic.pause();
       if (this.audioOn) this.soundGameover.play();
       //TODO: GAME OVER
     }
@@ -736,5 +751,64 @@ class Game {
     safetyCheck();
 
     return maze;
+  }
+
+  safetyCheck() {
+    // Initialize a set to keep track of all reachable paths
+    let reachablePaths = new Set();
+    let queue = [];
+
+    // Find the first path cell to start the BFS
+    if (this.pathFields.length === 0) return true; // If no paths exist, it's an automatic failure
+
+    for (let i = 0; i < this.pathFields.length; i++) {
+      const startField = this.pathFields[i];
+      queue.push(startField);
+      reachablePaths.add(`${startField.x},${startField.y}`);
+      break; // Start BFS from the first path field found
+    }
+
+    // Perform BFS to explore all connected path cells
+    while (queue.length > 0) {
+      const currentField = queue.shift();
+
+      // Define directions to move (up, down, left, right)
+      const directions = [
+        { dx: 1, dy: 0 }, // Down
+        { dx: -1, dy: 0 }, // Up
+        { dx: 0, dy: 1 }, // Right
+        { dx: 0, dy: -1 }, // Left
+      ];
+
+      for (let dir of directions) {
+        const newX = currentField.x + dir.dx;
+        const newY = currentField.y + dir.dy;
+
+        // Check if the new coordinates are within bounds and not a wall
+        if (
+          newX >= 0 &&
+          newX < this.fieldsInCol &&
+          newY >= 0 &&
+          newY < this.fieldsInRow &&
+          !this.fieldsMatrix[newX][newY].isWall &&
+          !reachablePaths.has(`${newX},${newY}`)
+        ) {
+          // Add the reachable field to the BFS queue
+          reachablePaths.add(`${newX},${newY}`);
+          queue.push(this.fieldsMatrix[newX][newY]);
+        }
+      }
+    }
+
+    // Now check if all path fields were visited
+    let foundIsland = false;
+    this.pathFields.forEach((field) => {
+      if (!reachablePaths.has(`${field.x},${field.y}`)) {
+        // If the field is not reachable, we found an island
+        foundIsland = true;
+      }
+    });
+
+    return foundIsland;
   }
 }

@@ -148,7 +148,7 @@ class Game {
 
   generateMaze() {
     // const maze = this.mazeAlgorithmDFS();
-    const maze = this.mazeAlgorithmKruskal);
+    const maze = this.mazeAlgorithmKruskal();
     // console.log(maze);
 
     // Apply the generated maze to the fieldsMatrix

@@ -8,8 +8,8 @@ class Field {
     this.element.style.width = `${size}px`;
     this.element.classList.add("field");
     this.element.style.position = "absolute";
-    this.element.style.left = `${(x + 1) * size}px`;
-    this.element.style.top = `${(y + 1) * size}px`;
+    this.element.style.left = `${x * size}px`;
+    this.element.style.top = `${y * size}px`;
     this.isWall = false;
     this.hasCoin = false;
   }

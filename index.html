@@ -3,18 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Game</title>
+    <title>Monster Maze</title>
     <link rel="stylesheet" href="./styles/style.css" />
+    <link rel="icon" type="image/png" href="/img/favicon/favicon-48x48.png" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/img/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/img/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/img/favicon/site.webmanifest" />
   </head>
   <body>
-    <div id="start-screen">
-      <button id="start-btn">Start</button>
-    </div>
-    <div id="game-screen">
-      <div id="game-field"></div>
-      <div id="statistics"></div>
-      <p>Coins: <span id="coins"></span></p>
-      <p>Lives: <span id="lives"></span></p>
+    <div id="game-container">
+      <section id="start-screen">
+        <!-- <h1>Monster Maze</h1> -->
+        <div id="title">
+          <img src="/img/MonsterMaze.svg" alt="" />
+        </div>
+        <button id="start-btn">Start game</button>
+      </section>
+
+      <section id="game-screen">
+        <div id="statistics">
+          <h2>Game statistics:</h2>
+          <p>Level: <span id="level">1</span></p>
+          <p>Coins: <span id="coins"></span></p>
+          <p>Lives: <span id="lives"></span></p>
+        </div>
+        <div id="game-field">
+          <div id="message-level">Level completed 💥</div>
+        </div>
+      </section>
+
+      <section id="end-screen">
+        <h1>Game over.</h1>
+        <p>End score: <span id="end-score"></span></p>
+        <p>Levels completed: <span id="end-levels"></span></p>
+      </section>
     </div>
     <!-- *********************** -->
     <script type="text/javascript" src="js/figure.js"></script>

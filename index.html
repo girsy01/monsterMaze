@@ -18,6 +18,27 @@
         <div id="title">
           <img src="/img/MonsterMaze.svg" alt="" />
         </div>
+        <div id="selections">
+          <fieldset>
+            <legend><h2>Select field size:</h2></legend>
+            <div id="size-options">
+              <div class="size-option">
+                <input type="radio" name="size" value="small" checked />
+                <label for="small"><button id="small" class="active">Small</button></label>
+              </div>
+
+              <div class="size-option">
+                <input type="radio" name="size" value="medium" checked />
+                <label for="medium"><button id="medium" class="selected">Medium</button></label>
+              </div>
+
+              <div class="size-option">
+                <input type="radio" name="size" value="large" checked />
+                <label for="large"><button id="large" class="active">Large</button></label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
         <button id="start-btn" autofocus>Start game</button>
       </section>
       <section id="game-screen">

@@ -12,8 +12,6 @@ body{
 }
 
 h1{
-  font-size: 50px;
-  margin-bottom: 50px;
   display: none;
 }
 
@@ -24,7 +22,7 @@ p{
 #title,
 #game-over{
   margin-top: 70px;
-  margin-bottom: 100px;
+  margin-bottom: 80px;
   width: 100%;
 }
 
@@ -55,25 +53,10 @@ button{
   box-shadow: inset 0px 4px 6px rgba(255, 255, 255, 0.3);
   background-color: rgb(170, 141, 216);
   
-  
   @media (max-width: 999px) {
     font-size: 16px;
     padding: 15px 30px;
   }
-}
-
-#audio-btns{
-  margin-top: 10px;
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: row;
-
-}
-
-#start-screen,
-#game-screen{
-  margin: 0;
-  margin-bottom: 20px;
 }
 
 /* Default button style */
@@ -83,21 +66,20 @@ button{
   padding: 10px;
   border-radius: 50%;
   transition: all 0.3s ease;
-  
+
   @media (max-width: 999px) {
-   padding: 7px;
+    padding: 7px;
   }
 }
 
-button img{
+button img {
   border-radius: 50%;
   height: 50px;
-  
+
   @media (max-width: 999px) {
     height: 35px;
   }
 }
-
 
 /* Hover effect */
 button:hover {
@@ -106,11 +88,56 @@ button:hover {
 }
 
 /* Style for active button */
-#audio-btns button.active {
+/* #audio-btns button.active { */
+button.active {
   box-shadow: inset 0px 0px 10px 6px rgba(0, 0, 0, 0.3);
-  background-color: hsl(263, 49%, 75%);
+  background-color: hsl(0, 0%, 60%);
 }
 
+fieldset {
+  border: 1px solid white;
+  padding: 20px;
+  text-align: center;
+}
+
+fieldset h2{
+  font-size: 30px;
+  font-weight: 400;
+  padding: 10px;
+}
+
+input[type="radio"] {
+  visibility: hidden;
+  height: 0;
+  width: 0;
+}
+
+#selections{
+  margin-bottom: 50px;
+}
+
+#selections button{
+  width: 150px;
+  margin: 10px;
+}
+
+#size-options{
+  display: flex;
+  padding: 0 15px 10px 15px;
+}
+
+#audio-btns{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+#start-screen,
+#game-screen{
+  margin: 0;
+  margin-bottom: 20px;
+}
 
 #game-screen,
 #end-screen{

@@ -3,28 +3,37 @@
   padding: 0;
   box-sizing: border-box;
   font-family: sans-serif;
-  color: white
+  color: white;
+  font-size: 18px;
+}
+
+body{
+  background-color: black;
 }
 
 h1{
   font-size: 50px;
   margin-bottom: 50px;
+  display: none;
 }
 
-h1{
-  display: none;
+p{
+  padding: 5px;
 }
 
 #title,
 #game-over{
-  margin-bottom: 50px;
-  width: 60vw;
+  margin-top: 70px;
+  margin-bottom: 100px;
+  width: 100%;
 }
 
 #game-container{
   margin: 50px;
+  margin-inline: auto;
   padding: 50px;
   background-color: rgb(65, 65, 65);
+  max-width: 1050px;
 }
 
 section{
@@ -45,6 +54,12 @@ button{
   cursor: pointer;
   box-shadow: inset 0px 4px 6px rgba(255, 255, 255, 0.3);
   background-color: rgb(170, 141, 216);
+  
+  
+  @media (max-width: 999px) {
+    font-size: 16px;
+    padding: 15px 30px;
+  }
 }
 
 #audio-btns{
@@ -52,10 +67,12 @@ button{
   margin-bottom: 10px;
   display: flex;
   flex-direction: row;
+
 }
 
 #start-screen,
 #game-screen{
+  margin: 0;
   margin-bottom: 20px;
 }
 
@@ -66,7 +83,21 @@ button{
   padding: 10px;
   border-radius: 50%;
   transition: all 0.3s ease;
+  
+  @media (max-width: 999px) {
+   padding: 7px;
+  }
 }
+
+button img{
+  border-radius: 50%;
+  height: 50px;
+  
+  @media (max-width: 999px) {
+    height: 35px;
+  }
+}
+
 
 /* Hover effect */
 button:hover {
@@ -80,10 +111,6 @@ button:hover {
   background-color: hsl(263, 49%, 75%);
 }
 
-button img{
-  border-radius: 50%;
-  height: 50px;
-}
 
 #game-screen,
 #end-screen{
@@ -102,11 +129,6 @@ button img{
 
 #statistics h2{
   padding-bottom: 20px;
-}
-
-p{
-  padding: 5px;
-  font-size: 18px;
 }
 
 .field{
@@ -151,18 +173,27 @@ p{
   position: absolute;
   top: 50%;
   left: 50%;
-  padding: 20px;
+  padding: 25px;
   width: 80%;
   transform: translate(-50%, -50%);
   min-height: 50px;
-  font-size: 25px;
   text-align: center;
-  background-color: #6f5895;
+  background-color:hsl(263, 49%, 25%);
   z-index: 99;
   display: flex;
   justify-content: center;
   align-items: center;
   display: none;
+
+  font-size: 25px;
+
+  @media (max-width: 999px) {
+    font-size: 22px;
+  }
+}
+
+#message-level-img{
+  width: 50px;
 }
 
 #end-screen button{

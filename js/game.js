@@ -9,6 +9,7 @@ class Game {
     this.livesElement = document.getElementById("lives");
     this.gameFieldElement = document.getElementById("game-field");
     this.messageLevelElement = document.getElementById("message-level");
+    this.messageLevelImgElement = document.getElementById("message-level-img");
     this.endScoreElement = document.getElementById("end-score");
     this.endLevelElement = document.getElementById("end-levels");
     this.gameIntervalId = null;
@@ -79,7 +80,6 @@ class Game {
   }
 
   start() {
-    console.log(this.myAudio);
     this.startScreenElement.style.display = "none";
     this.initialize();
     this.startLoop();
@@ -119,6 +119,9 @@ class Game {
 
     this.endScoreElement.innerText = this.coinsCollected;
     this.endLevelElement.innerText = this.levelCount - 1;
+
+    const retryBtnElement = document.getElementById("retry-btn");
+    retryBtnElement.focus();
   }
 
   //update is called in each iteration of the game-loop
@@ -148,8 +151,9 @@ class Game {
     if (this.levelCompleted) {
       if (this.myAudio.audioOn) this.myAudio.soundLevel.play();
       clearInterval(this.gameIntervalId);
+      this.messageLevelImgElement.src = `../img/player_win.png`;
       this.messageLevelElement.style.display = "block";
-      console.log("level completed");
+      // console.log("level completed");
       this.levelCount++;
       this.levelElement.innerText = this.levelCount;
       setTimeout(() => this.startNewLevel(), 2000);
@@ -211,26 +215,30 @@ class Game {
   }
 
   addMonsters(num) {
+    const getValidField = () => {
+      let isValid = false;
+      let field;
+      while (!isValid) {
+        //pick random path-field
+        const index = parseInt(Math.random() * this.pathFields.length);
+        field = this.pathFields[index];
+        if (Math.abs(field.x - this.player.x) >= 2 && Math.abs(field.y - this.player.y) >= 2) {
+          isValid = true;
+        }
+      }
+      return field;
+    };
+
     for (let i = 0; i < num; i++) {
-      const randomIndex = parseInt(Math.random() * this.pathFields.length);
-      const newField = this.pathFields[randomIndex];
+      const newField = getValidField(); //make sure monsters are in min distance of 2
       this.currentFieldsMonsters.push(newField); //random field
       this.monsters.push(new Monster(newField, this.fieldsInCol, this.fieldsInRow));
       const newElement = document.createElement("img");
       const randomImg = Math.floor(Math.random() * 17);
       newElement.src = `../img/monster${randomImg}.png`;
-      // const r = Math.floor(Math.random() * 100) + 150;
-      // const g = Math.floor(Math.random() * 50);
-      // const b = Math.floor(Math.random() * 50);
-      // newElement.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
       this.monsterElements.push(newElement);
       newElement.classList.add("isMonster");
-      // console.log(this.monsters[this.monsters.length - 1]);
     }
-    // console.log("Current Monsters:", this.monsters);
-    // console.log("Current Fields of Monsters after adding them:", this.currentFieldsMonsters);
-    // console.log("Current Monster Elements:", this.monsterElements);
-    // this.update();
   }
 
   initializeKeyListeners() {
@@ -383,7 +391,11 @@ class Game {
     //if collision occurred, remove monster, adjust lives and add new monster
     if (collisionIndex !== null) {
       //play audio
-      if (this.myAudio.audioOn) this.myAudio.soundCollision.play();
+      if (this.myAudio.audioOn) {
+        this.myAudio.soundCollision.pause();
+        this.myAudio.soundCollision.currentTime = 0;
+        this.myAudio.soundCollision.play();
+      }
       //remove monster
       this.monsters.splice(collisionIndex, 1);
       this.currentFieldsMonsters.splice(collisionIndex, 1);
@@ -436,12 +448,6 @@ class Game {
     //add walls
     this.generateMaze();
 
-    // console.log("Wall fields:", this.wallFields);
-    // console.log("Path fields:", this.pathFields);
-    // console.log("Monsters:", this.monsters);
-    // console.log("Monster elements:", this.monsterElements);
-    // console.log("Monster fields:", this.currentFieldsMonsters);
-
     //add coins to paths
     this.pathFields.forEach((e) => {
       const coinElement = document.createElement("div");
@@ -452,6 +458,7 @@ class Game {
     });
 
     //add Player and Monster
+    if ((this.levelCount + 1) % 2 === 0) this.numberOfMonsters++;
     const randomIndex = parseInt(Math.random() * this.pathFields.length);
     this.currentFieldPlayer = this.pathFields[randomIndex]; //random field
     this.player.x = this.currentFieldPlayer.x;

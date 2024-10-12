@@ -1,5 +1,5 @@
 class Game {
-  constructor(fieldsInRow, fieldsInCol, fieldSize, monsters, myAudio) {
+  constructor(fieldsInRow, fieldsInCol, monsters, myAudio) {
     this.startScreenElement = document.getElementById("start-screen");
     this.gameScreenElement = document.getElementById("game-screen");
     this.endScreenElement = document.getElementById("end-screen");
@@ -25,7 +25,7 @@ class Game {
     this.coinsToNewLife = 100;
     this.fieldsInCol = fieldsInCol;
     this.fieldsInRow = fieldsInRow;
-    this.fieldSize = fieldSize;
+    this.fieldSize = this.setFieldSize();
     this.myAudio = myAudio;
     this.fieldsMatrix = []; //fields matrix [][]
     this.allFields = []; //all fields in one array
@@ -84,7 +84,28 @@ class Game {
     this.gameLoop();
   }
 
-  start() {
+  setFieldSize(endWidth) {
+    // Get actual width of game container
+    let gameWidth = this.startScreenElement.offsetWidth;
+
+    //in case of retry, take endWidth
+    if (endWidth) gameWidth = endWidth;
+
+    //calc max height of game container
+    const titleHeight = this.titleElement.offsetHeight;
+    const statHeight = 400;
+    const audioBtnsHeight = this.audioButtonsElement.offsetHeight;
+    const gameHeightMax = window.innerHeight - (titleHeight + statHeight + audioBtnsHeight);
+
+    const fieldWidth = Math.floor(gameWidth / this.fieldsInRow);
+    const fieldHeight = Math.floor(gameHeightMax / this.fieldsInCol);
+
+    const size = Math.min(fieldWidth, fieldHeight, 100);
+    return size;
+  }
+
+  start(endWidth = undefined) {
+    this.fieldSize = this.setFieldSize(endWidth);
     this.startScreenElement.style.display = "none";
     this.initialize();
     this.startLoop();

@@ -4,11 +4,10 @@ window.onload = () => {
   const numberOfRowsArray = [7, 10, 15];
   const numberOfColumsArray = [7, 10, 15];
   const numberOfMonstersArray = [2, 5, 8];
-  let numberOfRows = 10;
-  let numberOfColums = 10;
-  let numberOfMonsters = 5;
-  const sizeOfFieldsArray = setFieldSizes();
-  let sizeOfFields = sizeOfFieldsArray[1]; //default medium
+  let selectedSizeOption = 1;
+  let numberOfRows = numberOfRowsArray[selectedSizeOption];
+  let numberOfColums = numberOfColumsArray[selectedSizeOption];
+  let numberOfMonsters = numberOfMonstersArray[selectedSizeOption];
 
   //*************************/
   //*************************/
@@ -21,7 +20,6 @@ window.onload = () => {
   const musicButtonElement = document.getElementById("music-btn");
   const soundEffectsButtonElement = document.getElementById("soundEffects-btn");
   const fieldSizeButtonElements = document.querySelectorAll(".size-option");
-  let selectedSizeOption = 1;
 
   let myGame;
   const myAudio = new MyAudio();
@@ -38,7 +36,7 @@ window.onload = () => {
 
   startBtnElement.onclick = () => {
     myAudio.gameStarted = true;
-    myGame = new Game(numberOfRows, numberOfColums, sizeOfFields, numberOfMonsters, myAudio);
+    myGame = new Game(numberOfRows, numberOfColums, numberOfMonsters, myAudio);
     myGame.start();
   };
 
@@ -47,6 +45,7 @@ window.onload = () => {
     const allFields = gameFieldElement.querySelectorAll(".field");
     allFields.forEach((e) => e.remove());
     const endScreen = document.getElementById("end-screen");
+    const endWidth = endScreen.offsetWidth;
     endScreen.style.display = "none";
     const titleElement = document.getElementById("title");
     titleElement.style.display = "flex";
@@ -55,8 +54,8 @@ window.onload = () => {
     myAudio.soundBackgroundMusic.currentTime = 0;
     myAudio.soundGameover.pause();
     myAudio.soundGameover.currentTime = 0;
-    myGame = new Game(numberOfRows, numberOfColums, sizeOfFields, numberOfMonsters, myAudio);
-    myGame.start();
+    myGame = new Game(numberOfRows, numberOfColums, numberOfMonsters, myAudio);
+    myGame.start(endWidth);
   };
 
   // Function to update the button states
@@ -88,20 +87,6 @@ window.onload = () => {
   const updateGameSettings = () => {
     numberOfRows = numberOfRowsArray[selectedSizeOption];
     numberOfColums = numberOfColumsArray[selectedSizeOption];
-    sizeOfFields = sizeOfFieldsArray[selectedSizeOption];
     numberOfMonsters = numberOfMonstersArray[selectedSizeOption];
   };
-
-  function setFieldSizes() {
-    let gameContainerPadding;
-    const windowWidth = window.innerWidth;
-    if (windowWidth <= 550) gameContainerPadding = 50;
-    else gameContainerPadding = 100;
-    const gameWidth = windowWidth - gameContainerPadding;
-
-    const array = numberOfRowsArray.map((e) => {
-      return Math.min(Math.floor(gameWidth / e), 50);
-    });
-    return array;
-  }
 };

@@ -12,6 +12,7 @@ class Game {
     this.messageLevelImgElement = document.getElementById("message-level-img");
     this.endScoreElement = document.getElementById("end-score");
     this.endLevelElement = document.getElementById("end-levels");
+    this.titleElement = document.getElementById("title");
     this.gameIntervalId = null;
     this.gameLoopFrequency = 1000 / 20;
     this.frequencyOfMonstersMovement = 10; //every ... iteration the monsters are moving (small number -> faster)
@@ -41,6 +42,10 @@ class Game {
 
   initialize() {
     this.gameScreenElement.style.display = "flex";
+    const titleImage = this.titleElement.querySelector("img");
+    titleImage.style.width = "70%";
+    this.titleElement.style.marginTop = "0";
+    this.titleElement.style.marginBottom = "50px";
     //initialize the game field
     //create empty fields
     for (let i = 0; i < this.fieldsInCol; i++) {
@@ -108,6 +113,8 @@ class Game {
 
   handleGameOver() {
     // console.log("Game over.");
+    this.titleElement.style.display = "none";
+
     clearInterval(this.gameIntervalId);
     this.myAudio.soundBackgroundMusic.pause();
     if (this.myAudio.audioOn) this.myAudio.soundGameover.play();

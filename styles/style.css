@@ -4,7 +4,7 @@
   box-sizing: border-box;
   font-family: sans-serif;
   color: white;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 body{
@@ -24,14 +24,24 @@ p{
   margin-top: 70px;
   margin-bottom: 80px;
   width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#game-over{
+  margin-top: 30px;
 }
 
 #game-container{
-  margin: 50px;
+  /* margin: 50px; */
   margin-inline: auto;
-  padding: 50px;
+  padding: 50px;  /*do not just change, is used in script.js*/
   background-color: rgb(65, 65, 65);
   max-width: 1050px;
+
+  @media (max-width: 550px) {
+      padding: 25px; /*do not just change, is used in script.js*/
+  }
 }
 
 section{
@@ -100,10 +110,10 @@ fieldset {
   text-align: center;
 }
 
-fieldset h2{
-  font-size: 30px;
+h2{
+  font-size: 25px;
   font-weight: 400;
-  padding: 10px;
+  padding-inline: 20px;
 }
 
 input[type="radio"] {
@@ -119,11 +129,19 @@ input[type="radio"] {
 #selections button{
   width: 150px;
   margin: 10px;
+
+  @media (max-width: 999px) {
+     width: 120px;
+    }
 }
 
 #size-options{
   display: flex;
   padding: 0 15px 10px 15px;
+
+  @media (max-width: 550px) {
+     flex-direction: column;
+    }
 }
 
 #audio-btns{
@@ -150,12 +168,12 @@ input[type="radio"] {
 }
 
 #statistics{
-  padding: 20px;
+  /* padding: 20px; */
   text-align: center;
 }
 
 #statistics h2{
-  padding-bottom: 20px;
+  padding-bottom: 15px;
 }
 
 .field{

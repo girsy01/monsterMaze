@@ -38,6 +38,7 @@ p{
   padding: 50px;  /*do not just change, is used in script.js*/
   background-color: rgb(65, 65, 65);
   max-width: 1050px;
+  height: 100vh;
 
   @media (max-width: 550px) {
       padding: 25px; /*do not just change, is used in script.js*/

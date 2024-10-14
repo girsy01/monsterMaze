@@ -21,7 +21,7 @@ class Game {
     this.levelCount = 1;
     this.counter = 0;
     this.totalCoins = 0;
-    this.coinsCollected = 0;
+    this.coinsCollected = 0; //just in this level, to check if level completed
     this.coinsToNewLife = 100;
     this.fieldsInCol = fieldsInCol;
     this.fieldsInRow = fieldsInRow;
@@ -100,7 +100,7 @@ class Game {
     const fieldWidth = Math.floor(gameWidth / this.fieldsInRow);
     const fieldHeight = Math.floor(gameHeightMax / this.fieldsInCol);
 
-    const size = Math.min(fieldWidth, fieldHeight, 100);
+    const size = Math.min(fieldWidth, fieldHeight, 75);
     return size;
   }
 
@@ -145,7 +145,7 @@ class Game {
     this.audioButtonsElement.style.display = "none";
     this.endScreenElement.style.display = "flex";
 
-    this.endScoreElement.innerText = this.coinsCollected;
+    this.endScoreElement.innerText = this.player.coins;
     this.endLevelElement.innerText = this.levelCount - 1;
 
     const retryBtnElement = document.getElementById("retry-btn");

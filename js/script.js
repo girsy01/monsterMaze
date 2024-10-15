@@ -14,6 +14,7 @@ window.onload = () => {
   //*************************/
   //*************************/
   //*************************/
+  //*************************/
   const startBtnElement = document.getElementById("start-btn");
   const retryBtnElement = document.getElementById("retry-btn");
   const audioButtonsElement = document.getElementById("audio-btns");

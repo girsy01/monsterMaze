@@ -181,7 +181,7 @@ class Game {
     if (this.levelCompleted) {
       if (this.myAudio.audioOn) this.myAudio.soundLevel.play();
       clearInterval(this.gameIntervalId);
-      this.messageLevelImgElement.src = `img/player_win.png`;
+      // this.messageLevelImgElement.src = ``;
       this.messageLevelElement.style.display = "block";
       // console.log("level completed");
       this.levelCount++;

@@ -13,6 +13,7 @@ class Game {
     this.endScoreElement = document.getElementById("end-score");
     this.endLevelElement = document.getElementById("end-levels");
     this.titleElement = document.getElementById("title");
+    this.instructionsElement = document.getElementById("instructions");
     this.gameIntervalId = null;
     this.gameLoopFrequency = 1000 / 20;
     this.frequencyOfMonstersMovement = 10; //every ... iteration the monsters are moving (small number -> faster)
@@ -107,6 +108,7 @@ class Game {
   start(endWidth = undefined) {
     this.fieldSize = this.setFieldSize(endWidth);
     this.startScreenElement.style.display = "none";
+    this.instructionsElement.style.display = "none";
     this.initialize();
     this.startLoop();
   }
@@ -179,7 +181,7 @@ class Game {
     if (this.levelCompleted) {
       if (this.myAudio.audioOn) this.myAudio.soundLevel.play();
       clearInterval(this.gameIntervalId);
-      this.messageLevelImgElement.src = `../img/player_win.png`;
+      this.messageLevelImgElement.src = `img/player_win.png`;
       this.messageLevelElement.style.display = "block";
       // console.log("level completed");
       this.levelCount++;
@@ -232,7 +234,7 @@ class Game {
     this.playerElement = document.createElement("img");
     this.playerElement.classList.add("isPlayer");
     const randomImg = Math.floor(Math.random() * 10);
-    this.playerElement.src = `../img/player${randomImg}.png`;
+    this.playerElement.src = `img/player${randomImg}.png`;
     this.playerElement.style.fontSize = `${this.fieldSize * 0.7}px`;
     const randomIndex = parseInt(Math.random() * this.pathFields.length);
     this.currentFieldPlayer = this.pathFields[randomIndex]; //random field
@@ -263,7 +265,7 @@ class Game {
       this.monsters.push(new Monster(newField, this.fieldsInCol, this.fieldsInRow));
       const newElement = document.createElement("img");
       const randomImg = Math.floor(Math.random() * 17);
-      newElement.src = `../img/monster${randomImg}.png`;
+      newElement.src = `img/monster${randomImg}.png`;
       this.monsterElements.push(newElement);
       newElement.classList.add("isMonster");
     }

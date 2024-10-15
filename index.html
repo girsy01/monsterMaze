@@ -12,63 +12,85 @@
     <link rel="manifest" href="/img/favicon/site.webmanifest" />
   </head>
   <body>
-    <div id="game-container">
-      <h1>Monster Maze</h1>
-      <div id="title">
-        <img src="/img/MonsterMaze.svg" alt="" />
-      </div>
-      <section id="start-screen">
-        <div id="selections">
-          <fieldset>
-            <legend><h2>Select field size:</h2></legend>
-            <div id="size-options">
-              <div class="size-option">
-                <input type="radio" name="size" value="small" checked />
-                <label for="small"><button id="small" class="active">Small</button></label>
-              </div>
-
-              <div class="size-option">
-                <input type="radio" name="size" value="medium" checked />
-                <label for="medium"><button id="medium" class="selected">Medium</button></label>
-              </div>
-
-              <div class="size-option">
-                <input type="radio" name="size" value="large" checked />
-                <label for="large"><button id="large" class="active">Large</button></label>
-              </div>
-            </div>
-          </fieldset>
+    <div id="wrapper">
+      <div id="game-container">
+        <h1>Monster Maze</h1>
+        <div id="title">
+          <img src="/img/MonsterMaze.svg" alt="" />
         </div>
-        <button id="start-btn" autofocus>Start game</button>
-      </section>
-      <section id="game-screen">
-        <div id="statistics">
-          <h2>Game statistics:</h2>
-          <p>Level: <span id="level">1</span></p>
-          <p>Coins: <span id="coins"></span></p>
-          <p>Lives: <span id="lives"></span></p>
-        </div>
-        <div id="game-field">
-          <div id="message-level">
-            <img src="" alt="" id="message-level-img" />
-            <p>Level completed</p>
+        <section id="start-screen">
+          <div id="selections">
+            <fieldset>
+              <legend><h2>Select field size:</h2></legend>
+              <div id="size-options">
+                <div class="size-option">
+                  <input type="radio" name="size" value="small" checked />
+                  <label for="small"><button id="small" class="active">Small</button></label>
+                </div>
+
+                <div class="size-option">
+                  <input type="radio" name="size" value="medium" checked />
+                  <label for="medium"><button id="medium" class="selected">Medium</button></label>
+                </div>
+
+                <div class="size-option">
+                  <input type="radio" name="size" value="large" checked />
+                  <label for="large"><button id="large" class="active">Large</button></label>
+                </div>
+              </div>
+            </fieldset>
           </div>
-        </div>
-      </section>
-      <section id="audio-btns">
-        <button id="music-btn"><img src="/img/icons/music_noBg.svg" alt="" /></button>
-        <button id="soundEffects-btn"><img src="/img/icons/sounds_noBg.svg" alt="" /></button>
-      </section>
-
-      <section id="end-screen">
-        <h1>Game over.</h1>
-        <div id="game-over">
-          <img src="/img/GameOver.svg" alt="" />
-        </div>
-        <p>End score: <span id="end-score"></span></p>
-        <p>Levels completed: <span id="end-levels"></span></p>
-        <button id="retry-btn">Retry</button>
-      </section>
+          <button id="start-btn" autofocus>Start game</button>
+        </section>
+        <section id="game-screen">
+          <div id="statistics">
+            <h2>Game statistics:</h2>
+            <p>Level: <span id="level">1</span></p>
+            <p>Coins: <span id="coins"></span></p>
+            <p>Lives: <span id="lives"></span></p>
+          </div>
+          <div id="game-field">
+            <div id="message-level">
+              <img src="" alt="" id="message-level-img" />
+              <p>Level completed</p>
+            </div>
+          </div>
+        </section>
+        <section id="audio-btns">
+          <button id="music-btn"><img src="/img/icons/music.svg" alt="" /></button>
+          <button id="soundEffects-btn"><img src="/img/icons/soundeffect.svg" alt="" /></button>
+          <!-- <button id="info-btn"><img src="/img/icons/information.svg" alt="" /></button> -->
+        </section>
+        <section id="instructions">
+          <div class="centered">
+            <h2>Instructions</h2>
+            <ul>
+              <li><span class="emph">Use the arrow keys</span> to escape from the monsters.</li>
+              <li>
+                <span class="emph">Collect all the coins</span> before the monsters catch you.
+              </li>
+              <li>
+                <span class="emph">Toggle music on/off</span> with the button or by pressing
+                <span class="emph">M</span> on your keyboard.
+              </li>
+              <li>
+                <span class="emph">Toggle sound effects on/off</span> with the button or by pressing
+                <span class="emph">S</span> on your keyboard.
+              </li>
+              <li><span class="emph">Survive</span> at all costs!</li>
+            </ul>
+          </div>
+        </section>
+        <section id="end-screen">
+          <h1>Game over.</h1>
+          <div id="game-over">
+            <img src="/img/GameOver.svg" alt="" />
+          </div>
+          <p>End score: <span id="end-score"></span></p>
+          <p>Levels completed: <span id="end-levels"></span></p>
+          <button id="retry-btn">Retry</button>
+        </section>
+      </div>
     </div>
     <!-- *********************** -->
     <script type="text/javascript" src="js/audio.js"></script>

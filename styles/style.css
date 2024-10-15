@@ -3,8 +3,12 @@
   padding: 0;
   box-sizing: border-box;
   font-family: sans-serif;
-  color: white;
+  color: #f1f1f1;
   font-size: 20px;
+
+  @media (max-width: 999px) {
+      font-size: 17px;
+  }
 }
 
 body{
@@ -32,13 +36,19 @@ p{
   margin-top: 30px;
 }
 
+#wrapper{
+  background-color: rgb(65, 65, 65);
+  min-height: 100vh;
+  max-width: 1050px;
+  margin: auto;
+}
+
 #game-container{
   /* margin: 50px; */
+  position: relative;
   margin-inline: auto;
   padding: 50px;  /*do not just change, is used in script.js*/
-  background-color: rgb(65, 65, 65);
   max-width: 1050px;
-  height: 100vh;
 
   @media (max-width: 550px) {
       padding: 25px; /*do not just change, is used in script.js*/
@@ -111,7 +121,7 @@ fieldset {
   text-align: center;
 }
 
-h2{
+fieldset h2{
   font-size: 25px;
   font-weight: 400;
   padding-inline: 20px;
@@ -215,12 +225,12 @@ input[type="radio"] {
   border-radius: 50%;
 }
 
-#message-level {
+#message-level{
   position: absolute;
   top: 50%;
   left: 50%;
   padding: 25px;
-  width: 80%;
+  width: 70%;
   transform: translate(-50%, -50%);
   min-height: 50px;
   text-align: center;
@@ -230,12 +240,59 @@ input[type="radio"] {
   justify-content: center;
   align-items: center;
   display: none;
+}
 
-  font-size: 25px;
+#message-level p{
+  font-size: 30px;
+  
+    @media (max-width: 999px) {
+      font-size: 25px;
+    }
+}
+
+.centered{
+  margin: auto;
+}
+
+#instructions{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: hsl(263, 49%, 25%);
+  /* width: 100%; */
+  margin: 40px;
+  margin-top: 60px;
+  padding:40px;
+}
+
+#instructions *{
+  margin-bottom: 10px;
+  padding: 0;
+  text-align: left;
+}
+
+ul {
+  font-weight: 200;
+  list-style-position: outside;
+  margin-left: 15px;
+}
+
+li{
+  /* letter-spacing: 0.05em; */
+  line-height: 1.5em;
+}
+
+.emph{
+  font-weight: 600;
+}
+
+#instructions h2{
+  padding-bottom: 20px;
+  font-size: 30px;
 
   @media (max-width: 999px) {
-    font-size: 22px;
-  }
+      font-size: 22px;
+    }
 }
 
 #message-level-img{
@@ -245,4 +302,6 @@ input[type="radio"] {
 #end-screen button{
   margin-top: 50px;
 }
+
+
 

@@ -17,6 +17,8 @@ class Game {
     this.gameIntervalId = null;
     this.gameLoopFrequency = 1000 / 20;
     this.frequencyOfMonstersMovement = 10; //every ... iteration the monsters are moving (small number -> faster)
+    this.fieldsInCol = fieldsInCol;
+    this.fieldsInRow = fieldsInRow;
     this.gameOver = false;
     this.levelCompleted = false;
     this.levelCount = 1;
@@ -24,8 +26,7 @@ class Game {
     this.totalCoins = 0;
     this.coinsCollected = 0; //just in this level, to check if level completed
     this.coinsToNewLife = 100;
-    this.fieldsInCol = fieldsInCol;
-    this.fieldsInRow = fieldsInRow;
+    if (this.fieldsInCol < 10 || this.fieldsInRow < 10) this.coinsToNewLife = 50;
     this.fieldSize = this.setFieldSize();
     this.myAudio = myAudio;
     this.fieldsMatrix = []; //fields matrix [][]

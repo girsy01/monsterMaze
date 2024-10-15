@@ -191,7 +191,7 @@ input[type="radio"] {
 .field{
   background-color: #f1f1f1;
   /* display: inline-block; */
-  border: .1px solid black;
+  /* border: .1px solid black; */
   display: flex;
   align-items: center;
   justify-content: center;

@@ -26,9 +26,10 @@ p{
 
 #title,
 #game-over{
-  margin-top: 70px;
+  margin-top: 50px;
   margin-bottom: 80px;
-  width: 100%;
+  margin-inline: auto;
+  width: 80%;
   display: flex;
   justify-content: center;
 }

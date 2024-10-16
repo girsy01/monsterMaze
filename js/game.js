@@ -226,8 +226,6 @@ class Game {
 
       // Run safety check to ensure no islands exist
       mazeValid = !this.safetyCheck();
-      // //TODO: remove this alert
-      // if (!mazeValid) alert("unvalid maze was genereated and is now regenerated.");
     } while (!mazeValid); // Regenerate maze until no islands are found
   }
 

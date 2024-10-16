@@ -55,10 +55,12 @@ Initially, the maze was generated using the DFS (Depth-First Search) algorithm. 
 
 
 # Backlog
+- Improve the design and overall responsiveness of the game, ensuring it adapts well to different screen sizes and devices
 - Implement input fields for custom field size (#rows, #columns)
-- Introduce different monster types with unique behaviors (e.g., faster movement, monsters that chase the player, or different moving patterns)
+- Introduce different monster types with unique behaviors (e.g., faster movement, monsters that chase the player, or those with unpredictable patterns)
 - Implement time-based scoring, rewarding players for completing levels faster
-- Increase monster movement speed as players reach higher levels to additionally raise the difficulty progressively
+- Increase monster movement speed as players reach higher levels to raise the difficulty progressively
+
 
 
 # Technologies Used

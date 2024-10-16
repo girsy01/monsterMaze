@@ -60,6 +60,8 @@ Initially, the maze was generated using the DFS (Depth-First Search) algorithm. 
 - Introduce different monster types with unique behaviors (e.g., faster movement, monsters that chase the player, or those with unpredictable patterns)
 - Implement time-based scoring, rewarding players for completing levels faster
 - Increase monster movement speed as players reach higher levels to raise the difficulty progressively
+- Implement a version of the game that supports touch devices, allowing play without a keyboard
+
 
 
 

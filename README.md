@@ -10,26 +10,32 @@
 
 
 # Description
-**Monster Maze** is an exciting escape adventure where the player must avoid monsters while navigating the maze using the arrow keys. The goal is to collect all the coins scattered along the paths. Once all coins are gathered, the level is completed, and the player advances to the next stage.
+**Monster Maze** is a thrilling escape adventure where the player must outsmart and evade monsters while navigating through a maze. Using the arrow keys, the player collects all the coins scattered along the paths. Once all the coins are gathered, the level is completed, and the player advances to the next stage.
 
-Be careful! If a monster catches you, you'll lose a life. When all lives are lost, the game ends, and your total collected coins and completed levels are displayed.
+Beware of the monsters! If they catch you, you'll lose a life. The game ends when all lives are lost, at which point your total collected coins and completed levels will be displayed.
+
+Please note: **This game requires a keyboard to play.** If you're on a touch device, you won't be able to control the game. Enjoy the challenge of Monster Maze on a desktop or laptop for the best experience.
 
 
 
 # Main Functionalities
-- player can chose between three different maze sizes (small, medium, large)
-- maze size reflects the number of fields in each row and column
-- the resulting field size adapts automatically to the viewport size (length of each field)
-- a random maze is generated with the [Kruskal Algorithm](#kruskals-algorithm-for-maze-generation)
-- player moves by using arrow keys up/down/left/right on the keyboard
-- monsters move randomly in the maze
-- on each field of the path there is one coin
-- as soon as all coins are collected by the player, the level ends
-- when colliding with a monster, the player loses one live and the monster is added to the maze at another random position
-- after every second completed level, one additional monster is added to the maze
-- monsters are added to the maze with minimum distance of 2 to the player
-- when all lives are ost, the game ends and you can try again
-- music and sound effects are on by default, player can toggle them off/on by clicking the corresponding buttons or simply press M (for music) or S (for sound effects) on the keyboard
+- The player can choose between three different maze sizes: small, medium, or large.
+- The maze size determines the number of fields in each row and column.
+- The size of each field automatically adjusts to fit the viewport.
+- A random maze is generated using the [Kruskal Algorithm](#kruskals-algorithm-for-maze-generation).
+- A safety check ensures that the generated maze has no isolated paths or unreachable areas, guaranteeing a solvable maze.
+- The player moves through the maze using the arrow keys (up, down, left, right).
+- Monsters move randomly within the maze, with movement occurring at intervals.
+- Each path field contains a coin.
+- The level ends when the player collects all the coins.
+- If the player collides with a monster, they lose one life, and the monster respawns at a random position.
+- Players gain extra lives by collecting a certain number of coins, which varies depending on the maze size.
+- After every two completed levels, an additional monster is added to the maze.
+- Monsters are placed at a minimum distance of 2 fields from the player.
+- A message is displayed after each completed level, providing feedback before progressing to the next stage.
+- The game ends when all lives are lost, but players can try again.
+- Audio feedback plays during key events like coin collection, collisions, and game over.
+- Music and sound effects are enabled by default. The player can toggle them on/off by clicking the respective buttons or pressing **M** (for music) and **S** (for sound effects) on the keyboard.
 
 ## Kruskal's Algorithm for Maze Generation
 
@@ -48,7 +54,7 @@ This process ensures that there is always a path between any two points in the m
 - implement input fields for custom field size (#rows, #columns)
 
 
-# Technologies Used
+## Technologies Used
 - **HTML**
 - **CSS**
 - **JavaScript**
@@ -56,30 +62,21 @@ This process ensures that there is always a path between any two points in the m
 - **JS Classes**
 - **JS `Audio()` and JS `Image()`**
 
-# States
+## States
 - **Start Screen**
 - **Game Screen**
 - **Game Over Screen**
 
-# Project Structure
+## Touch Device Detection
+This game requires a keyboard to play. Users on touch devices (phones, tablets, etc.) will see a message indicating that it is not possible to play without a keyboard. The game elements are disabled for touch users.
 
-## `index.html`
+## Project Structure
+
+### `index.html`
 - Contains the HTML structure for the game, including elements for the start screen, game screen, and end screen.
-- Elements:
-  - `#start-screen`
-  - `#game-screen`
-  - `#end-screen`
-  - `#game-field`
-  - `#audio-btns`
-  - `#coins`
-  - `#lives`
-  - `#level`
-  - `#end-score`
-  - `#end-levels`
-  - `#title`
-  - `#instructions`
+- A new `div` with the ID `#touch-warning` is added to display the warning message for users on touch devices.
 
-## `game.js`
+### `game.js`
 - **Game Properties:**
   - `this.startScreenElement`
   - `this.gameScreenElement`
@@ -138,8 +135,11 @@ This process ensures that there is always a path between any two points in the m
   - `checkForCollision()`
   - `handleGameOver()`
   - `startNewLevel()`
+  - **Touch Detection:**
+    - `isTouchDevice()`: Detects whether the user is on a touch device.
+    - Shows the `#touch-warning` message if a touch device is detected and disables the start button.
 
-## `field.js`
+### `field.js`
 - **Properties:**
   - `this.x`
   - `this.y`
@@ -148,10 +148,7 @@ This process ensures that there is always a path between any two points in the m
   - `this.isWall`
   - `this.hasCoin`
 
-- **Functions:**
-  - Constructor: creates and initializes the field with size, position, and state (wall or path).
-
-## `figure.js`
+### `figure.js`
 - **Properties:**
   - `this.x`
   - `this.y`
@@ -160,25 +157,16 @@ This process ensures that there is always a path between any two points in the m
   - `this.fieldsInRow`
   - `this.fieldsInCol`
 
-- **Functions:**
-  - Constructor: sets the position and movement directions for game figures like the player and monsters.
-
-## `player.js`
+### `player.js`
 - **Properties:**
   - `this.coins`
   - `this.lives`
 
-- **Functions:**
-  - Extends `Figure`: inherits the position and movement properties from `Figure`.
-
-## `monster.js`
+### `monster.js`
 - **Properties:**
   - `this.currentDirection`
 
-- **Functions:**
-  - Extends `Figure`: inherits the position and movement properties from `Figure`.
-
-## `audio.js`
+### `audio.js`
 - **Properties:**
   - `this.gameStarted`
   - `this.musicOn`
@@ -196,16 +184,17 @@ This process ensures that there is always a path between any two points in the m
   - `handleMusic()`
   - `handleSounds()`
 
-## `script.js`
+### `script.js`
 - **Functions:**
-  - `window.onload`: sets up event listeners, starts the game, and handles audio interactions.
+  - `window.onload`: sets up event listeners, starts the game, handles audio interactions, and detects touch devices.
   - `updateButtonStates()`: updates field size options.
   - `updateGameSettings()`: updates game settings when the field size is changed.
 
-## `style.css`
+### `style.css`
 - Contains the styles for various game elements, including buttons, fields, screens, and text.
 - **Main sections:**
   - General element styles (`*`, `body`, `h1`, `p`)
   - Button styles (`button`, `#audio-btns button`)
   - Screen and field styles (`#start-screen`, `#game-screen`, `#game-field`, `.field`, `.isPlayer`, `.isMonster`, `.isWall`, `.coin`)
   - Responsive styles for different screen sizes.
+  - **Touch Warning Message Styling**: New styles for `#touch-warning` to display a centered message on touch devices.

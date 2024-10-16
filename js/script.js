@@ -90,4 +90,23 @@ window.onload = () => {
     numberOfColums = numberOfColumsArray[selectedSizeOption];
     numberOfMonsters = numberOfMonstersArray[selectedSizeOption];
   };
+
+  // Check if the user is on a touch device
+  if (isTouchDevice()) {
+    // Show the touch warning message
+    document.getElementById("touch-warning").style.display = "block";
+
+    // Optionally, disable the start button or other elements
+    document.getElementById("start-btn").disabled = true;
+  } else {
+    // Hide the warning (just in case)
+    document.getElementById("touch-warning").style.display = "none";
+
+    // Proceed with the normal game initialization
+    // Your existing game initialization logic...
+  }
 };
+
+function isTouchDevice() {
+  return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+}

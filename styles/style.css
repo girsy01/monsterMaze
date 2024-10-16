@@ -307,4 +307,18 @@ li{
 }
 
 
-
+#touch-warning {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: hsla(262, 48%, 15%, 0.9);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 100;
+  font-size: 18px;
+  max-width: 80%;
+  display: none;
+}

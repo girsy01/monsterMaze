@@ -49,14 +49,19 @@ Here’s a simplified version of how it works in the game:
 2. **Randomly choose walls** and remove them, but only if doing so connects two previously unconnected areas of the maze.
 3. **Continue removing walls** until all cells are connected and the maze is fully generated.
 
-This process ensures that there is always a path between any two points in the maze, while avoiding loops or isolated sections.
+This process ensures that there is always a path between any two points in the maze, avoiding isolated sections. However, in smaller mazes, isolated path fields occasionally appeared, making the level unsolvable. To prevent this, an additional check was implemented to regenerate the maze whenever this issue occurs.
+
+Initially, the maze was generated using the DFS (Depth-First Search) algorithm. However, this often resulted in very long dead-ends, making the game more difficult as monsters would frequently get stuck in these areas, and it became challenging for the player to navigate. To improve gameplay, the maze generation was switched to Kruskal’s Algorithm, which creates more balanced mazes and ensures a more enjoyable experience.
 
 
 # Backlog
-- implement input fields for custom field size (#rows, #columns)
+- Implement input fields for custom field size (#rows, #columns)
+- Introduce different monster types with unique behaviors (e.g., faster movement, monsters that chase the player, or different moving patterns)
+- Implement time-based scoring, rewarding players for completing levels faster
+- Increase monster movement speed as players reach higher levels to additionally raise the difficulty progressively
 
 
-## Technologies Used
+# Technologies Used
 - **HTML**
 - **CSS**
 - **JavaScript**

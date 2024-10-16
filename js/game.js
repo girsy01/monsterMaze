@@ -45,7 +45,8 @@ class Game {
   initialize() {
     this.gameScreenElement.style.display = "flex";
     const titleImage = this.titleElement.querySelector("img");
-    titleImage.style.width = "70%";
+    if (window.innerWidth > 550) titleImage.src = "img/MonsterMaze.svg";
+    // titleImage.style.width = "0%";
     this.titleElement.style.marginTop = "0";
     this.titleElement.style.marginBottom = "50px";
     //initialize the game field
@@ -95,7 +96,7 @@ class Game {
 
     //calc max height of game container
     const titleHeight = this.titleElement.offsetHeight;
-    const statHeight = 400;
+    const statHeight = 200;
     const audioBtnsHeight = this.audioButtonsElement.offsetHeight;
     const gameHeightMax = window.innerHeight - (titleHeight + statHeight + audioBtnsHeight);
 

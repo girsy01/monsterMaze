@@ -25,6 +25,7 @@ Please note: **This game requires a keyboard to play.** If you're on a touch dev
 - A random maze is generated using the [Kruskal Algorithm](#kruskals-algorithm-for-maze-generation).
 - A safety check ensures that the generated maze has no isolated paths or unreachable areas, guaranteeing a solvable maze.
 - The player moves through the maze using the arrow keys (up, down, left, right).
+- The player and monsters are assigned a random image each time they are generated, adding visual variety to each playthrough.
 - Monsters move randomly within the maze, with movement occurring at intervals.
 - Each path field contains a coin.
 - The level ends when the player collects all the coins.
@@ -36,6 +37,7 @@ Please note: **This game requires a keyboard to play.** If you're on a touch dev
 - The game ends when all lives are lost, but players can try again.
 - Audio feedback plays during key events like coin collection, collisions, and game over.
 - Music and sound effects are enabled by default. The player can toggle them on/off by clicking the respective buttons or pressing **M** (for music) and **S** (for sound effects) on the keyboard.
+
 
 ## Kruskal's Algorithm for Maze Generation
 

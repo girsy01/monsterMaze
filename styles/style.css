@@ -189,6 +189,11 @@ input[type="radio"] {
   padding-bottom: 15px;
 }
 
+
+#stats-container *{
+  padding-inline: 15px;
+}
+
 .field{
   background-color: #f1f1f1;
   /* display: inline-block; */

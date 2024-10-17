@@ -13,6 +13,7 @@ class Game {
     this.endScoreElement = document.getElementById("end-score");
     this.endLevelElement = document.getElementById("end-levels");
     this.titleElement = document.getElementById("title");
+    // this.titleHeight = null;
     this.instructionsElement = document.getElementById("instructions");
     this.gameIntervalId = null;
     this.gameLoopFrequency = 1000 / 20;
@@ -44,8 +45,7 @@ class Game {
 
   initialize() {
     this.gameScreenElement.style.display = "flex";
-    const titleImage = this.titleElement.querySelector("img");
-    if (window.innerWidth > 550) titleImage.src = "img/MonsterMaze.svg";
+
     // titleImage.style.width = "0%";
     this.titleElement.style.marginTop = "20px";
     this.titleElement.style.marginBottom = "50px";
@@ -89,19 +89,22 @@ class Game {
 
   setFieldSize() {
     const previousSize = localStorage.getItem("fieldSize");
-    console.log("from local storage:", previousSize);
+    // console.log("from local storage:", previousSize);
     if (previousSize) return parseInt(previousSize);
 
     // Get actual width of game container
     let gameWidth = this.startScreenElement.offsetWidth;
 
     //calc max height of game container
-    const titleHeight = this.titleElement.offsetHeight;
-    const statHeight = 200;
-    const audioBtnsHeight = this.audioButtonsElement.offsetHeight;
+    // const titleHeight = this.titleElement.offsetHeight;
+    // const statHeight = 150;
+    // const audioBtnsHeight = this.audioButtonsElement.offsetHeight;
+    const titleHeight = this.getFullHeightWithMargin(this.titleElement);
+    const statHeight = 205;
+    const audioBtnsHeight = this.getFullHeightWithMargin(this.audioButtonsElement);
     const gameHeightMax = window.innerHeight - (titleHeight + statHeight + audioBtnsHeight);
 
-    console.log(window.innerHeight, titleHeight, statHeight, audioBtnsHeight);
+    // console.log(window.innerHeight, titleHeight, statHeight, audioBtnsHeight);
 
     const fieldWidth = Math.floor(gameWidth / this.fieldsInRow);
     const fieldHeight = Math.floor(gameHeightMax / this.fieldsInCol);
@@ -111,12 +114,27 @@ class Game {
     return size;
   }
 
+  getFullHeightWithMargin(element) {
+    const style = window.getComputedStyle(element);
+    const marginTop = parseInt(style.marginTop);
+    const marginBottom = parseInt(style.marginBottom);
+    const fullHeight = element.offsetHeight + marginTop + marginBottom;
+
+    return fullHeight;
+  }
+
   start(endWidth = undefined) {
-    this.fieldSize = this.setFieldSize(endWidth);
-    this.startScreenElement.style.display = "none";
-    this.instructionsElement.style.display = "none";
-    this.initialize();
-    this.startLoop();
+    const titleImage = this.titleElement.querySelector("img");
+    if (window.innerWidth > 550) {
+      titleImage.src = "img/MonsterMaze.svg";
+    }
+    titleImage.onload = () => {
+      this.fieldSize = this.setFieldSize();
+      this.startScreenElement.style.display = "none";
+      this.instructionsElement.style.display = "none";
+      this.initialize();
+      this.startLoop();
+    };
   }
 
   startLoop() {

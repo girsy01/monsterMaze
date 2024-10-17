@@ -24,6 +24,7 @@ window.onload = () => {
 
   let myGame;
   const myAudio = new MyAudio();
+  localStorage.removeItem("fieldSize");
   // Attach event listeners
   musicButtonElement.onclick = () => myAudio.handleMusic();
   soundEffectsButtonElement.onclick = () => myAudio.handleSounds();
@@ -46,7 +47,6 @@ window.onload = () => {
     const allFields = gameFieldElement.querySelectorAll(".field");
     allFields.forEach((e) => e.remove());
     const endScreen = document.getElementById("end-screen");
-    const endWidth = endScreen.offsetWidth;
     endScreen.style.display = "none";
     const titleElement = document.getElementById("title");
     titleElement.style.display = "flex";
@@ -56,7 +56,7 @@ window.onload = () => {
     myAudio.soundGameover.pause();
     myAudio.soundGameover.currentTime = 0;
     myGame = new Game(numberOfRows, numberOfColums, numberOfMonsters, myAudio);
-    myGame.start(endWidth);
+    myGame.start();
   };
 
   // Function to update the button states

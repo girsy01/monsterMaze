@@ -27,7 +27,7 @@ class Game {
     this.coinsCollected = 0; //just in this level, to check if level completed
     this.coinsToNewLife = 100;
     if (this.fieldsInCol < 10 || this.fieldsInRow < 10) this.coinsToNewLife = 50;
-    this.fieldSize = this.setFieldSize();
+    this.fieldSize = null;
     this.myAudio = myAudio;
     this.fieldsMatrix = []; //fields matrix [][]
     this.allFields = []; //all fields in one array
@@ -47,7 +47,7 @@ class Game {
     const titleImage = this.titleElement.querySelector("img");
     if (window.innerWidth > 550) titleImage.src = "img/MonsterMaze.svg";
     // titleImage.style.width = "0%";
-    this.titleElement.style.marginTop = "0";
+    this.titleElement.style.marginTop = "20px";
     this.titleElement.style.marginBottom = "50px";
     //initialize the game field
     //create empty fields
@@ -87,12 +87,13 @@ class Game {
     this.gameLoop();
   }
 
-  setFieldSize(endWidth) {
+  setFieldSize() {
+    const previousSize = localStorage.getItem("fieldSize");
+    console.log("from local storage:", previousSize);
+    if (previousSize) return parseInt(previousSize);
+
     // Get actual width of game container
     let gameWidth = this.startScreenElement.offsetWidth;
-
-    //in case of retry, take endWidth
-    if (endWidth) gameWidth = endWidth;
 
     //calc max height of game container
     const titleHeight = this.titleElement.offsetHeight;
@@ -100,10 +101,13 @@ class Game {
     const audioBtnsHeight = this.audioButtonsElement.offsetHeight;
     const gameHeightMax = window.innerHeight - (titleHeight + statHeight + audioBtnsHeight);
 
+    console.log(window.innerHeight, titleHeight, statHeight, audioBtnsHeight);
+
     const fieldWidth = Math.floor(gameWidth / this.fieldsInRow);
     const fieldHeight = Math.floor(gameHeightMax / this.fieldsInCol);
 
     const size = Math.min(fieldWidth, fieldHeight, 75);
+    localStorage.setItem("fieldSize", size);
     return size;
   }
 
@@ -346,7 +350,7 @@ class Game {
         return false;
       };
 
-      //in 75% of the cases the monster keeps moving in the same direction
+      //set the percentage, in witch the monster keeps moving in the same direction
       if (Math.random() < 0.65) {
         // console.log("Trying to keep going in current direction:", this.monsters[index].currentDirection);
 

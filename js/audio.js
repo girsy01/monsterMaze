@@ -7,6 +7,7 @@ class MyAudio {
     this.soundEffectsButtonElement = document.getElementById("soundEffects-btn");
     this.soundBackgroundMusic = new Audio("sounds/background.mp3");
     this.soundBackgroundMusic.loop = true;
+    this.soundBackgroundMusic.volume = 0.5;
     this.soundLife = new Audio("sounds/life.mp3");
     this.soundCoin = new Audio("sounds/coin.mp3");
     this.soundCoin.playbackRate = 2; // 1.5x faster

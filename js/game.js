@@ -347,7 +347,7 @@ class Game {
       };
 
       //in 75% of the cases the monster keeps moving in the same direction
-      if (Math.random() < 0.7) {
+      if (Math.random() < 0.65) {
         // console.log("Trying to keep going in current direction:", this.monsters[index].currentDirection);
 
         dx = this.monsters[index].currentDirection[0];

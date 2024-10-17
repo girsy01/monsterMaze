@@ -20,8 +20,8 @@ class MyAudio {
     this.soundCollision = new Audio("sounds/collision.wav");
     this.soundCollision.volume = this.volumeSoundEffects;
     this.soundGameover = new Audio("sounds/gameover.wav");
+    this.soundGameover.volume = this.volumeSoundEffects;
     this.soundGameover.playbackRate = 1.2; // 1.5x faster
-    this.soundGameover = this.volumeSoundEffects;
   }
 
   handleMusic() {

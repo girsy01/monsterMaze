@@ -13,8 +13,8 @@ class Game {
     this.endScoreElement = document.getElementById("end-score");
     this.endLevelElement = document.getElementById("end-levels");
     this.titleElement = document.getElementById("title");
-    // this.titleHeight = null;
     this.instructionsElement = document.getElementById("instructions");
+    this.footerElement = document.querySelector("footer");
     this.gameIntervalId = null;
     this.gameLoopFrequency = 1000 / 20;
     this.frequencyOfMonstersMovement = 10; //every ... iteration the monsters are moving (small number -> faster)
@@ -132,6 +132,7 @@ class Game {
       this.fieldSize = this.setFieldSize();
       this.startScreenElement.style.display = "none";
       this.instructionsElement.style.display = "none";
+      this.footerElement.style.display = "none";
       this.initialize();
       this.startLoop();
     };
@@ -170,6 +171,7 @@ class Game {
     this.gameScreenElement.style.display = "none";
     this.audioButtonsElement.style.display = "none";
     this.endScreenElement.style.display = "flex";
+    this.footerElement.style.display = "block";
 
     this.endScoreElement.innerText = this.player.coins;
     this.endLevelElement.innerText = this.levelCount - 1;

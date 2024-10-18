@@ -296,11 +296,21 @@ li{
 }
 
 #instructions h2{
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   font-size: 30px;
 
   @media (max-width: 999px) {
       font-size: 22px;
+    }
+}
+
+#instructions h3{
+  padding-top: 25px;
+  padding-bottom: 5px;
+  font-size: 22px;
+
+  @media (max-width: 999px) {
+      font-size: 18px;
     }
 }
 

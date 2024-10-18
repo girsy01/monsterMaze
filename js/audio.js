@@ -1,7 +1,7 @@
 class MyAudio {
   constructor() {
-    this.volumeSoundEffects = 0.8;
-    this.volumeMusic = 0.5;
+    this.volumeSoundEffects = 0.3;
+    this.volumeMusic = 0.15;
     this.gameStarted = false;
     this.musicOn = true;
     this.audioOn = true;

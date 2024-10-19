@@ -231,8 +231,8 @@ class Game {
       this.allFields.forEach((field) => field.element.classList.remove("isWall"));
 
       //Generate new maze
-      const maze = this.mazeAlgorithmDFS();
-      // const maze = this.mazeAlgorithmKruskal();
+      // const maze = this.mazeAlgorithmDFS();
+      const maze = this.mazeAlgorithmKruskal();
 
       // Apply the generated maze to the fieldsMatrix
       for (let i = 0; i < this.fieldsInCol; i++) {
